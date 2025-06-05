@@ -51,6 +51,13 @@ class User(AbstractUser):
         return self.username  # Используем username из AbstractUser
 
 
+class Category(models.Model):
+    name = models.CharField(max_length=255)
+    # other fields if needed
+
+    def __str__(self):
+        return self.name
+
 class Product(models.Model):
     name = models.CharField(max_length=100, verbose_name='Название напитка/еды')
     category = models.CharField(max_length=50, verbose_name='Категория', null=True, blank=True)
