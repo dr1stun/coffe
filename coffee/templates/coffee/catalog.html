@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-{# C:\Users\anpoi\PycharmProjects\Veb_coffee\coffee\templates\coffee\catalog.html #}
 {% extends 'coffee/base.html' %}
 
 {% block title %}{{ page_title }}{% endblock %}
@@ -18,17 +10,22 @@
             {% for product in products %}
                  <div class="col">
                     <div class="card h-100">
+                        {# Проверяем, есть ли изображение для продукта #}
                         {% if product.image %}
                             <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
                         {% else %}
+                            {# Если изображения нет, используем заглушку #}
                             <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">
+                                {# Ссылка на страницу детали продукта #}
                                 <a href="{% url 'coffee:product_detail' product.id %}">{{ product.name }}</a>
                             </h5>
+                            {# Описание продукта, укороченное до 100 символов #}
                             <p class="card-text">{{ product.description|truncatechars:100 }}</p>
                             <p class="card-text"><strong>{{ product.price }} руб.</strong></p>
+                            {# Кнопка "В избранное" (функционал пока не реализован) #}
                             <button class="btn btn-outline-primary btn-sm">В избранное</button>
                         </div>
                         <div class="card-footer text-muted">
@@ -42,6 +39,3 @@
         <p>Нет товаров в каталоге.</p>
     {% endif %}
 {% endblock %}
-
-</body>
-</html>
