@@ -10,25 +10,17 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
-
-# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-()b#i)2kbk_7o%3lfudnrf+#nj%xnqm_#c%f=%*d@-(pqopvxa'
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
 ALLOWED_HOSTS = []
-
-
-# Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -37,8 +29,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'coffee',
+    'coffee', # Убедитесь, что ваше приложение 'coffee' здесь указано
 ]
+
+AUTH_USER_MODEL = 'coffee.User' # Обязательно, так как вы расширяете User
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -77,8 +72,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'digital_coffee_shop_db',
-        'USER': 'sdoxni100ras@.tiXA',
-        'PASSWORD': 'sdoxni100ras@.tiXA',
+        'USER': 'coffee_user',
+        'PASSWORD': 'coffee',
         'HOST': 'localhost',
         'PORT': '',
     }
