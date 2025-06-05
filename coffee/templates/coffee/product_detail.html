@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{# C:\Users\anpoi\PycharmProjects\Veb_coffee\coffee\templates\coffee\product_detail.html #}
+{% extends 'coffee/base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-4">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid rounded" alt="{{ product.name }}">
+            {% else %}
+                <img src="https://via.placeholder.com/400x300?text=No+Image" class="img-fluid rounded" alt="No Image">
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+            <h1>{{ product.name }}</h1>
+            <p class="text-muted">{{ product.category.name|default:"Без категории" }}</p>
+            <p class="lead">{{ product.description }}</p>
+            <h3>Цена: {{ product.price }} руб.</h3>
+            <p>Доступность: {% if product.is_available %}В наличии{% else %}Нет в наличии{% endif %}</p>
+
+            {# Связанные ингредиенты #}
+            {% if product.productingredient_set.all %}
+                <h4 class="mt-4">Состав:</h4>
+                <ul>
+                    {% for pi in product.productingredient_set.all %}
+                        <li>{{ pi.ingredient.name }} ({{ pi.quantity }} {{ pi.unit }})</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+
+            {# Отзывы (пока просто заглушка, но здесь будут реальные отзывы) #}
+            <h4 class="mt-4">Отзывы:</h4>
+            {% if product.review_set.all %}
+                <div class="list-group">
+                    {% for review in product.review_set.all %}
+                        <div class="list-group-item">
+                            <h6 class="mb-1">{{ review.user.username|default:"Аноним" }} (Оценка: {{ review.rating }}/5)</h6>
+                            <p class="mb-1">{{ review.comment }}</p>
+                            <small class="text-muted">{{ review.created_at|date:"d M Y H:i" }}</small>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Пока нет отзывов для этого продукта.</p>
+            {% endif %}
+
+            <div class="mt-4">
+                <a href="{% url 'coffee:home' %}" class="btn btn-secondary">Вернуться на главную</a>
+                {# Кнопки редактирования и удаления (пока только ссылки) #}
+                <a href="{% url 'coffee:product_edit' product.id %}" class="btn btn-warning">Редактировать</a>
+                <a href="{% url 'coffee:product_delete' product.id %}" class="btn btn-danger">Удалить</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>

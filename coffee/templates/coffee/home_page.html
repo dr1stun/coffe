@@ -1,0 +1,90 @@
+
+{% extends 'coffee/base.html' %}
+
+{% block title %}{{ page_title }}{% endblock %} {# Переопределяем заголовок страницы #}
+
+{% block content %} {# Здесь начинается уникальный контент главной страницы #}
+    <h1 class="mb-4">{{ welcome_message }}</h1>
+
+    {# Виджет "Самые популярные напитки" #}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Самые популярные</h2>
+        </div>
+        <div class="card-body">
+            {% if popular_products %}
+                <div class="row row-cols-1 row-cols-md-3 g-4"> {# Сетка Bootstrap #}
+                    {% for product in popular_products %}
+                        <div class="col">
+                            <div class="card h-100">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="{% url 'coffee:product_detail' product.id %}">{{ product.name }}</a>
+                                    </h5>
+                                    <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+                                    <p class="card-text"><strong>{{ product.price }} руб.</strong></p>
+                                    {# Кнопка "Сохранить в избранное" (пока не работает, но есть) #}
+                                    <button class="btn btn-outline-primary btn-sm">В избранное</button>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Категория: {{ product.category.name|default:"Не указана" }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Пока нет популярных напитков.</p>
+            {% endif %}
+            <div class="text-end mt-3">
+                <a href="{% url 'coffee:catalog' %}" class="btn btn-secondary">Весь каталог</a>
+            </div>
+        </div>
+    </div>
+
+    {# Виджет "Новинки" (повторяет структуру популярного) #}
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Наши новинки</h2>
+        </div>
+        <div class="card-body">
+            {% if new_products %}
+                <div class="row row-cols-1 row-cols-md-3 g-4">
+                    {% for product in new_products %}
+                         <div class="col">
+                            <div class="card h-100">
+                                {% if product.image %}
+                                    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 200px; object-fit: cover;">
+                                {% else %}
+                                    <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top" alt="No Image" style="height: 200px; object-fit: cover;">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <a href="{% url 'coffee:product_detail' product.id %}">{{ product.name }}</a>
+                                    </h5>
+                                    <p class="card-text">{{ product.description|truncatechars:100 }}</p>
+                                    <p class="card-text"><strong>{{ product.price }} руб.</strong></p>
+                                    <button class="btn btn-outline-primary btn-sm">В избранное</button>
+                                </div>
+                                <div class="card-footer text-muted">
+                                    Категория: {{ product.category.name|default:"Не указана" }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p>Пока нет новых напитков.</p>
+            {% endif %}
+            <div class="text-end mt-3">
+                <a href="{% url 'coffee:catalog' %}" class="btn btn-secondary">Весь каталог</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
